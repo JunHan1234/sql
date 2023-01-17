@@ -197,7 +197,7 @@ from employees
 where job_id like 'SA%' and
     salary not in (2500, 3500);
 
---order by 절을 이용한 오름차순 정렬 asc(기본값이므로 생략가능)
+--order by 절을 이용한 오름차순 정렬 ascending (asc, 기본값이므로 생략가능)
 select last_name, department_id
 from employees
 order by department_id;
@@ -224,6 +224,8 @@ where department_id = 100
 order by hire_date;
 
 /*1차정렬에 이은 2차정렬. n차정렬이 가능하다.*/
+-- 아래 예제에서는 department_id로 오름차순 1차정렬,
+-- 다음으로 salary로 내림차순 2차정렬을 했다.
 select last_name, department_id, salary
 from employees
 where department_id > 80
