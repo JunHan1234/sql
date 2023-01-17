@@ -8,7 +8,7 @@ from departments;
 select location_id, department_id
 from departments;
 
-/*command 이기 때문에 ;로 마무리하지 않는다.*/
+/*column 유형을 스크립트로 출력. command 이기 때문에 ;로 마무리하지 않는다.*/
 desc departments
 
 --select 절에서, expression의 사용.

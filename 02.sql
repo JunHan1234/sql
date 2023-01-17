@@ -1,5 +1,6 @@
 -- where 의 활용 
 /*같다를 표현하는 연산자 = */
+-- 피연산자의 type이 같아야 한다.
 select employee_id, last_name, department_id
 from employees
 where department_id = 50;
@@ -73,7 +74,7 @@ select last_name, hire_date
 from employees
 where hire_date in ('2003/06/17', '2005/09/21');
 
--- 비슷하다 '같다부분 + 와일드카드(%)'
+-- 비슷하다 '같다부분 + 와일드카드(%, 임의의 0개이상의 문자)'
 -- 첫 글자가 S인 사원명을 호출한다.
 select last_name
 from employees
@@ -99,3 +100,131 @@ where last_name like '%s%';
 select last_name, hire_date
 from employees
 where hire_date like '2005%';
+
+/*임의의 한글자에 해당하는 와일드카드 _*/
+select last_name
+from employees
+where last_name like 'K___';
+
+-- 과제: 이름의 두번째 글자가 o 인 사원의 이름을 조회하라.
+select last_name
+from employees
+where last_name like '_o%';
+
+/*와일드카드와 똑같은 _ 를 처리하는법 -> \ 다음으로 오는 문자는 그냥 문자이다.*/
+--escape 문자는 지정 가능하다.
+select job_id
+from employees;
+
+select last_name, job_id
+from employees
+where job_id like 'I_\_%' escape '\';
+
+select last_name, job_id
+from employees
+where job_id like 'I_[_%' escape '[';
+
+-- 과제: 직업에 _R이 포함된 사원들의 이름, 직업을 조회하라.
+select last_name, job_id
+from employees
+where job_id like '%\_R%' escape '\';
+
+-- where절은 true값을 return하는 구문이다. expression에 null이 섞이면 null값으로 일관된다.
+select employee_id, last_name, manager_id
+from employees;
+
+-- 따라서 where절 옆의 expression이 null이므로, 값이 null이다.
+select last_name, manager_id
+from employees
+where manager_id = null;
+
+-- 그러므로, = 연산자 대신 is 를 활용하여 요소값을 찾아낸다.
+select last_name, manager_id
+from employees
+where manager_id is null;
+
+-- 논리 연산자 and
+select last_name, job_id, salary
+from employees
+where salary >= 5000 and job_id like '%IT%';
+
+-- 논리 연산자 or
+select last_name, job_id, salary
+from employees
+where salary >= 5000 or job_id like '%IT%';
+
+-- 과제: 월급이 $5000 이상 $12000 이하이다. 그리고,
+--       20번이나 50번 부서에서 일한다.
+--       위 사원들의 이름, 월급, 부서번호를 조회하라.
+select last_name, salary, department_id
+from employees
+where (salary between 5000 and 12000) and
+    department_id in (20, 50);
+    
+-- 과제: 이름에 a와 e가 포함된 사원들의 이름을 조회하라.
+select last_name
+from employees
+where last_name like '%a%' and
+    last_name like '%e%';
+
+/*여집합의 사용. not 연산자의 활용.*/
+select last_name, job_id
+from employees
+where job_id not in ('IT_PROG', 'SA_REP');
+
+select last_name, salary
+from employees
+where salary not between 10000 and 15000;
+
+select last_name, job_id
+from employees
+where job_id not like '%IT%';
+
+/*'is null' 연산자의 부정*/
+select last_name, job_id
+from employees
+where commission_pct is not null;
+
+/*논리 연산자의 부정*/
+select last_name, salary
+from employees
+where not (manager_id is null and salary >= 20000);
+
+-- 과제: 직업이 영업이다. 그리고, 월급이 $2500, $3500가 아니다.
+--       위 사원들의 이름, 직업, 월급을 조회하라.
+select last_name, job_id, salary
+from employees
+where job_id like 'SA%' and
+    salary not in (2500, 3500);
+
+--order by 절을 이용한 오름차순 정렬 asc(기본값이므로 생략가능)
+select last_name, department_id
+from employees
+order by department_id;
+
+--내림차순 정렬 descending
+select last_name, department_id
+from employees
+order by department_id desc;
+
+/*department_id로 정렬하고 싶을 경우.*/
+select last_name, department_id
+from employees
+order by 2;
+
+/*별명으로 정렬*/
+select last_name, department_id dept_id
+from employees
+order by dept_id;
+
+/*키워드를 순위별으로 정렬(1순위 select절 2순위 from절 3순위 where절 ...)*/
+select last_name, hire_date
+from employees
+where department_id = 100
+order by hire_date;
+
+/*1차정렬에 이은 2차정렬. n차정렬이 가능하다.*/
+select last_name, department_id, salary
+from employees
+where department_id > 80
+order by department_id asc, salary desc;
