@@ -32,10 +32,12 @@ from employees;
 select last_name, job_id, 12 * salary + (12 * salary * commission_pct)
 from employees;
 
-select last_name as name, commission_pct comm /*as는 생략 가능하다.*/
+/*as는 생략 가능하다.*/
+select last_name as name, commission_pct comm 
 from employees;
 
-select last_name "Name", salary * 12 "Annual Salary" /*""로 대소문자 구별 가능하다.*/
+/*""로 대소문자 구별 가능하다.*/
+select last_name "Name", salary * 12 "Annual Salary"
 from employees;
 
 -- 과제: 사원들의 사번, 이름, 직업, 입사일(STARTDATE)을 조회하라.

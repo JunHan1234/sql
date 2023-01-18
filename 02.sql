@@ -207,7 +207,7 @@ select last_name, department_id
 from employees
 order by department_id desc;
 
-/*department_id로 정렬하고 싶을 경우.*/
+/*department_id(select절 2번째 위치)로 정렬하고 싶을 경우.*/
 select last_name, department_id
 from employees
 order by 2;
