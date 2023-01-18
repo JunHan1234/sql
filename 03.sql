@@ -35,7 +35,7 @@ select concat('Hello', 'World')
 from dual;
 
 /*1개의 field를 받아 하나의 field가 있는 row를 return 한다.*/
--- index 2번부터 5글자 출력.
+-- index 2번부터, length 5글자 출력.
 select substr('HelloWorld', 2, 5)
 from dual;
 
