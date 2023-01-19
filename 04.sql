@@ -256,13 +256,19 @@ order by case day
          when 'saturday' then 6
          else 7
     end;
-    
+
 -- 과제: 2005년 이전에 입사한 사원들에게 100만원 상품권,
 --       2005년 후에 입사한 사원들에게 10만원 상품권을 지급한다.
 --       사원들의 이름, 입사일, 상품권 금액을 조회하라.
+-- 정답:
 select last_name, hire_date,
-    case to_number(hire_date, 'yyyy')
-    when to_number(hire_date, 'yyyy') < 2005 then 1000000
-    else 100000
-    end to_number(hire_date, 'yyyy')
-from employees;
+    case when hire_date <= '2005/12/31' then '100만원'
+        else '10만원' end gift
+from employees
+order by gift, hire_date;
+/*select last_name, hire_date,
+    case when to_number(to_char(hire_date, 'yyyy')) <= 2005 then '1,000,000'
+    else '100,000'
+    end gift
+from employees
+order by gift, hire_date;*/

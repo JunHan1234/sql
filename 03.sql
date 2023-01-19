@@ -1,11 +1,11 @@
 -- single function
 desc dual
 
---single function은 row 하나를 받아서 결과 하나를 도출한다.
+--single function은 row n개를 받아서 결과 하나를 도출한다.
 select *
 from dual;
 
--- parameter에 lower 하나 들어갔다.
+-- parameter에 row 하나 들어갔다.
 select lower('SQL Course')
 from dual;
 
