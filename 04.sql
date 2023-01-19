@@ -80,12 +80,13 @@ select to_char(salary, '$99,999.99'), to_char(salary, '$00,000.00')
 from employees
 where last_name = 'Ernst';
 
---9 -> 값이 없으면 내버려둔다. 0 -> 값이 없으면 0으로 채운다.
+--9 -> 형식에 값을 채울때, 해당 자릿수에 값이 없으면 내버려둔다.
+--0 -> 형식에 값을 채울때, 해당 자릿수에 값이 없으면 0으로 채운다.
 select '|' || to_char(12.12, '9999.99') || '|',
     '|' || to_char(12.12, '0000.00') || '|'
 from dual;
 
---space 삭제.
+--space 삭제. fill mode(fm)
 select '|' || to_char(12.12, 'fm9999.99') || '|',
     '|' || to_char(12.12, 'fm0000.00') || '|'
 from dual;
@@ -153,7 +154,8 @@ from employees;
 select job_id, nvl2(commission_pct, 'SAL+COMM', 0) income
 from employees;
 
--- 다르면 첫째 값 return, 복습시간 보충
+-- nullif의 첫째 값과 둘째 값이 다르면 첫째 값 return, 
+--          같다면 null return.
 select first_name, last_name,
     nullif(length(first_name), length(last_name))
 from employees;
@@ -167,9 +169,11 @@ select last_name, job_id,
     coalesce(to_char(commission_pct), to_char(manager_id), 'None')
 from employees;
 
--- a에서 b로 바꾸는 decode. (기준값, 비교값, 기본값) 기준값과 비교값의 타입은 같아야한다.
+-- a에서 b로 바꾸는 "decode" (기준값, 비교값, 기본값) 기준값과 비교값의 타입은 같아야한다.
 -- 월급에 따른 소득세율 계산해보는 예제이다.
 -- decode의 기본값은 null 이다.
+/*80번 부서 직원들의 월급을 2000으로 나눴을 때,
+                0부터 해당하는 값의 세율이 return.*/
 select last_name, salary,
     decode(trunc(salary / 2000),
         0, 0.00,
@@ -179,15 +183,15 @@ select last_name, salary,
         4, 0.40,
         5, 0.42,
         6, 0.44,
-            0.45) tax_rate
+           0.45) tax_rate
 from employees
 where department_id = 80;
 
---null이 리턴됨을 확인.
+--salary는 number type이므로 null이 리턴됨을 확인.
 select decode(salary, 'a', 1)
 from employees;
 
---기본값 0을 주었다.
+--리턴된 null값에 기본값 0을 주었다.
 select decode(salary, 'a', 1, 0)
 from employees;
 
@@ -242,9 +246,11 @@ select last_name, salary,
          when salary < 20000 then 'high'
          else 'good'
     end grade
-from employees;
+from employees
+order by salary desc;
 
 -- 과제: 사원들의 이름, 입사일, 입사요일을 월요일부터 요일순으로 조회하라.
+/*order by 절에 case 절을 활용함을 확인.*/
 select last_name, hire_date, to_char(hire_date, 'fmday') day
 from employees
 order by case day
