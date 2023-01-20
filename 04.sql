@@ -34,7 +34,7 @@ from dual;
 select to_char(sysdate, 'Year Month Ddsp Day(Dy)')
 from dual;
 
---오늘의 요일 Number값 출력.
+--오늘의 요일에 해당하는 Number값 출력.
 select to_char(sysdate, 'd')
 from dual;
 
@@ -150,7 +150,7 @@ from employees;
 select job_id, nvl2(commission_pct, 'SAL+COMM', 'SAL') income
 from employees;
 
--- 두번째 0은 숫자 0으로 자동변환된 것이다.
+-- 두번째 0은 숫자 0으로 자동형변환된 것이다.
 select job_id, nvl2(commission_pct, 'SAL+COMM', 0) income
 from employees;
 
@@ -187,7 +187,9 @@ select last_name, salary,
 from employees
 where department_id = 80;
 
---salary는 number type이므로 null이 리턴됨을 확인.
+--salary는 number type이므로,
+-- character type으로 형변환 했을때,
+-- 'a'와 일치하는 값이 없으므로, null이 리턴됨을 확인.
 select decode(salary, 'a', 1)
 from employees;
 

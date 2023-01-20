@@ -17,6 +17,7 @@ where department_id in (20, 50);
 
 -- using을 사용하면, 특정 칼럼만 join한다.
 -- 따라서, department_id가 true값인 것만 return.
+-- manager_id는 return 안한다.
 select employee_id, last_name, department_id, location_id
 from employees join departments
 using (department_id);
@@ -58,7 +59,7 @@ where location_id = 1400;
 --using에 쓰이지 않은 공통칼럼에는 접두사를 붙여야 한다.
 select e.last_name, d.department_name
 from employees e join departments d
-using(department_id)
+using (department_id)
 where d.manager_id = 100;
 
 select e.employee_id, e.last_name, e.department_id,
@@ -177,8 +178,7 @@ select d.department_id, d.department_name, d.location_id, l.city
 from departments d, locations l
 where d.location_id = l.location_id
     and d.department_id in (20, 50);
-
--- 3개의 from.
+-- 3개 이상의 테이블 join.
 select e.last_name, d.department_name, l.city
 from employees e, departments d, locations l
 where e.department_id = d.department_id
