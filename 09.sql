@@ -1,3 +1,8 @@
+-- 테이블 삭제법.
+drop table dept;
+drop table emp;
+drop table sa_reps;
+
 -- 테이블 생성법. auto_commit.
 -- create table x (column name / data type);
 create table dept(
@@ -6,9 +11,6 @@ department_name varchar2(30),
 manager_id number(6),
 location_id number(4)
 );
-
--- 테이블 삭제법
-drop table dept;
 
 create table emp (
 employee_id number(6),
@@ -24,6 +26,7 @@ manager_id number(6),
 department_id number(4)
 );
 
+--------------------------------------------------------------------------------
 -- table에 data를 insert 해보기.
 insert into dept(department_id, department_name, manager_id, location_id)
 values (100, 'Public Relation', 100, 1700);
@@ -34,7 +37,7 @@ values (310, 'Purchasing');
 select *
 from dept;
 
--- table 만들기 종료. (끝을 내는 습관) transaction의 끝. -> commit
+-- table 만들기 종료. (끝을 내는 습관) transaction의 끝 = commit
 commit;
 
 insert into emp(employee_id, first_name, last_name,
@@ -43,21 +46,23 @@ insert into emp(employee_id, first_name, last_name,
                 manager_id, department_id)
 values(300, 'Louis', 'Pop',
         'Pop@gmail.com', '010-378-1278', sysdate,  /*insert행에서 function(sysdate)을 넣을수 있음.*/
-        'AC_ACCOUNT', 6900, null,
+        'AC_ACCOUNT', 6900, null,  /*insert행에서 null값도 넣을수 있음.*/
         205, 110);
 
 --emp() 가로 안 내용물 생략가능.
+-- 생략하는 대신 values 값을 정확히 column 순서대로 입력해야 한다.
 insert into emp
 values(320, 'Terry', 'Benard',
         'Benard@gmail.com', '010-637-0972', '2022/07/20',
         'AD_PRES', 5000, .2,
-        100, 310);
+        100, 30);
 
 commit;
 
 select *
 from emp;
 
+--------------------------------------------------------------------------------
 create table sa_reps (
 rep_id number(6),
 rep_name varchar2(25),
@@ -65,7 +70,7 @@ salary number(8, 2),
 commission_pct number(2, 2)
 );
 
--- data를 수동으로 insert 해보기.
+-- data를 수동으로 하나의 insert문에 여러개의 row를 insert 해보기.
 insert all
     into sa_reps values(1, '최한석', 20000, .1)
     into sa_reps values(2, '한아름', 30000, .12)
@@ -106,6 +111,7 @@ commit;
 select *
 from sa_reps;
 
+--------------------------------------------------------------------------------
 -- update 방법. where절을 꼭 병행사용 해야한다.
 update emp
 set job_id = 'IT_PROG',
@@ -132,7 +138,7 @@ select job_id, salary
 from emp
 where employee_id = 300;
 
-
+-- subquery의 활용
 update emp
 set job_id = (select job_id
                 from employees
@@ -152,7 +158,7 @@ select job_id, salary
 from emp
 where employee_id = 300;
 
---136행을 좋은 코드로 수정
+--138행을 좋은 코드로 수정(중복제거)
 update emp
 set (job_id, salary) = (select job_id, salary
                         from employees
@@ -165,22 +171,25 @@ where employee_id = 300;
 
 commit; /*transaction의 끝.*/
 
-
+--------------------------------------------------------------------------------
 -- delete 방법.
 delete dept
 where department_id = 310;
 
-select * from dept;
+select *
+from dept;
 
 rollback;
 
-select * from dept;
+select *
+from dept;
 
 delete emp
 where department_id = (select department_id
                         from departments
                         where department_name = 'Purchasing');
                         
-select * from emp;
+select * 
+from emp;
 
 commit;

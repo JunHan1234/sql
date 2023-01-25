@@ -1,5 +1,6 @@
 --합집합
-    -->조건 2가지: field의 data type이 같아야한다, column의 수가 같아야한다.
+    -->조건 1: field의 data type이 같아야한다.
+    -->조건 2: column의 수가 같아야한다.
 --set 1
 select employee_id, job_id
 from employees
@@ -10,9 +11,10 @@ from job_history;
 
 select employee_id, job_id
 from employees
-union all /*all로 중복 허용을 할 수 있다.*/
+union all /*all로 중복 허용을 할 수 있다. 176, 200 중복값 허용*/
 select employee_id, job_id
-from job_history;
+from job_history
+order by 1;
 
 -- 과제: 과거 직업을 현재 갖고 있는 사원들의 사번, 이름, 직업을 조회하라.
 select e.employee_id, e.last_name, e.job_id
@@ -33,7 +35,8 @@ where e.job_id in (select job_id
                     from job_history j
                     where e.employee_id = j.employee_id);
 
---department_name과 state_province는 하나로 뭉친다.
+-- department_name과 state_province는
+-- 동일 data type의 column이므로 하나로 섞여 뭉친다.
 select location_id, department_name
 from departments
 union
@@ -55,7 +58,7 @@ union
 select employee_id, job_id
 from job_history;
 
---3번째 column은 number type 0을 기입.
+--set2의 3번째 column은 number type 0 또는 null을 기입.
 select employee_id, job_id, salary
 from employees
 union
