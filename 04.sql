@@ -109,7 +109,7 @@ where hire_date = to_date('Sep 21, 2005', 'Mon dd, yyyy');
 --개떡같이 말해도 찰떡같이 알아들음. factor의 형식이 불일치한데 잘 알아듣는다는 뜻.
 select last_name, hire_date
 from employees
-where hire_date = to_date('Sep 21, 2005', 'Mon  dd yy');
+where hire_date = to_date('Sep 21, 2005', 'Mon     dd yy');
 
 --error가 발생함을 확인.
 select last_name, hire_date
@@ -128,7 +128,8 @@ from dual;
 select to_number('1,237.12', '9,999.99')
 from dual;
 
---null값을 없애는 function "NVL"
+-- null값을 없애는 function "NVL"
+-- nvl(기준값, 대체값)
 select nvl(null, 0)
 from dual;
 
@@ -147,6 +148,7 @@ select last_name, nvl(to_char(commission_pct), 'No Commission')
 from employees;
 
 -- 기준값을 보고 값이 있으면 첫번째 return, null이면 두번째를 return.
+-- nvl2(기준값, null이 아닐때 return할 값, null일때 return할 값)
 select job_id, nvl2(commission_pct, 'SAL+COMM', 'SAL') income
 from employees;
 
@@ -169,7 +171,7 @@ select last_name, job_id,
     coalesce(to_char(commission_pct), to_char(manager_id), 'None')
 from employees;
 
--- a에서 b로 바꾸는 "decode" (기준값, 비교값, 기본값) 기준값과 비교값의 타입은 같아야한다.
+-- a에서 b로 바꾸는 "decode" (기준값, 비교값, 대체값) 기준값과 비교값의 타입은 같아야한다.
 -- 월급에 따른 소득세율 계산해보는 예제이다.
 -- decode의 기본값은 null 이다.
 /*80번 부서 직원들의 월급을 2000으로 나눴을 때,
