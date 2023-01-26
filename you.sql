@@ -1,3 +1,4 @@
+--10장의 연장선.
 select tname
 from tab;
 
